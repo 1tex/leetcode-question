@@ -1,0 +1,26 @@
+    class Solution {
+        public int longestConsecutive(int[] nums) {
+            Arrays.sort(nums);
+            int len = nums.length;
+            if (len == 0) {
+                return 0;
+            }
+            int max = 1, cur = 1;
+            for (int i = 1; i < len; i++) {
+                if (nums[i - 1] + 1 == nums[i] || nums[i - 1] == nums[i]) {
+                    cur++;
+                    max = Math.max(cur, max);
+                } else {
+                    cur = 1;
+                }
+            }
+            return max;
+        }
+    }
+
+//total_testcases:73
+//total_correct:21
+//input_formatted:[0,3,7,2,5,8,4,6,0,1]
+//expected_output:9
+//code_output:10
+//last_testcase:[0,3,7,2,5,8,4,6,0,1]
