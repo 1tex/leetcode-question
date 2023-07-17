@@ -9,57 +9,47 @@ public class SortAnArray{
     }
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
+        public static int[] temp;
+
         public int[] sortArray(int[] nums) {
-            shuffle(nums);
-            sort(nums, 0 ,nums.length - 1);
+            sort(nums);
             return nums;
         }
 
-        void sort(int[] nums, int lo, int hi) {
-            if (lo >= hi) {
+        public static void sort(int[] nums) {
+            temp = new int[nums.length];
+            sort(nums, 0, nums.length - 1);
+        }
+
+        public static void sort(int[] nums, int lo, int hi) {
+            if (lo == hi) {
                 return;
             }
-            int p = partition(nums, lo, hi);
-            sort(nums, lo, p - 1);
-            sort(nums, p + 1, hi);
+            int mid = lo + (hi - lo) / 2;
+            sort(nums, lo, mid);
+            sort(nums, mid + 1, hi);
+            merge(nums, lo, mid, hi);
         }
 
-        int partition(int[] nums, int lo, int hi) {
-            int povit = nums[lo];
-            int left = lo + 1, right = hi;
-            while (left <= right) {
-                while (left < hi && nums[left] <= povit) {
-                    left++;
-                }
-                while (lo < right && nums[right] > povit) {
-                    right--;
-                }
+        public static void merge(int[] nums, int lo, int mid, int hi) {
+            for (int i = lo; i <= hi; i++) {
+                temp[i] = nums[i];
+            }
 
-                if (left >= right) {
-                    break;
+            int i = lo, j = mid + 1;
+            for (int p = lo; p <= hi; p++) {
+                if (i == mid + 1) {
+                    nums[p] = temp[j++];
+                } else if (j == hi + 1) {
+                    nums[p] = temp[i++];
+                } else if (temp[i] < temp[j]) {
+                    nums[p] = temp[i++];
                 } else {
-                    swap(nums, left, right);
+                    nums[p] = temp[j++];
                 }
             }
-
-            swap(nums, lo, right);
-            return right;
         }
 
-        void shuffle(int[] nums) {
-            Random rand = new Random();
-            int n = nums.length;
-            for (int i = 0; i < n; i++) {
-                int r = i + rand.nextInt(n - i);
-                swap(nums, i, r);
-            }
-        }
-
-        void swap(int[] nums, int a, int b) {
-            int temp = nums[b];
-            nums[b] = nums[a];
-            nums[a] = temp;
-        }
     }
     //leetcode submit region end(Prohibit modification and deletion)
 
